@@ -1,0 +1,379 @@
+Excelente\! Essa funcionalidade de "ver como aluno" é extremamente poderosa e útil para administradores. Ela eleva a experiência de gerenciamento a um novo patamar, permitindo testes e suporte muito mais eficazes.
+
+Para implementar isso, vamos usar uma estratégia similar à do "Preview de Curso", mas com um objetivo diferente: em vez de apenas *burlar* a matrícula, vamos temporariamente **assumir a identidade** do aluno para o WordPress. Isso garante que todas as permissões, progressos e dados exibidos sejam exatamente os daquele aluno.
+
+O plano é dividido em quatro fases:
+
+1.  **Geração do Link de Impersonificação:** Criar o botão "Preview como Aluno" na lista de alunos.
+2.  **Implementação da Lógica de Impersonificação:** Fazer o sistema trocar o contexto do usuário (de admin para aluno).
+3.  **Persistência do Modo Preview:** Garantir que o modo de preview continue ativo ao navegar entre o dashboard e os cursos.
+4.  **Exibição do Banner de Controle:** Mostrar uma barra no topo para que o admin saiba que está no modo preview e possa sair.
+
+-----
+
+### **Fase 1: Geração do Link de Impersonificação (Admin)**
+
+Primeiro, adicionamos a nova ação na tabela de alunos.
+
+  * **Arquivo a Modificar:** `view-students-page.php`
+  * **Local da Modificação:** Dentro do loop `foreach ($students as $student)`, na célula de "Ações".
+
+#### **Passo 1.1: Adicionar o Botão "Preview" na Tabela**
+
+  * **Ação:** Encontre o local que renderiza os links de ação e adicione o novo link de "Preview" antes do link de "Editar".
+
+      * **Lógica:**
+        1.  Gerar um token de segurança, exclusivo para a impersonificação (`impersonate_token`).
+        2.  Armazená-lo em um *transient* com validade curta (5 minutos), associando o ID do admin que está realizando a ação e o ID do aluno que será "impersonado".
+        3.  Criar a URL para o `dashboard-aluno.php` com esse token.
+
+  * **Implementação:**
+    Localize esta linha no `view-students-page.php`:
+
+    ```php
+    <td class="actions-links">
+        <a href="<?php echo admin_url('admin.php?page=tutor-ead-edit-user&user_id=' . esc_attr($student->ID)); ?>" class="action-link"><?php _e('Editar', 'tutor-ead'); ?></a>
+        ...
+    </td>
+    ```
+
+    **Adicione o novo código** antes do link de "Editar":
+
+    ```php
+    <td class="actions-links">
+        <?php
+        // --- NOVO LINK DE PREVIEW COMO ALUNO ---
+        $impersonate_token = 'tutoread_impersonate_' . bin2hex(random_bytes(16));
+        set_transient($impersonate_token, [
+            'admin_id'   => get_current_user_id(),
+            'student_id' => $student->ID
+        ], 5 * MINUTE_IN_SECONDS);
+
+        $preview_dashboard_url = add_query_arg([
+            'impersonate_token' => $impersonate_token
+        ], home_url('/dashboard-aluno/')); // Slug da página do dashboard
+        ?>
+        <a href="<?php echo esc_url($preview_dashboard_url); ?>" class="action-link" target="_blank"><?php _e('Preview', 'tutor-ead'); ?></a>
+        
+        <a href="<?php echo admin_url('admin.php?page=tutor-ead-edit-user&user_id=' . esc_attr($student->ID)); ?>" class="action-link"><?php _e('Editar', 'tutor-ead'); ?></a>
+        ...
+    </td>
+    ```
+
+-----
+
+### **Fase 2: Implementação da Lógica de Impersonificação**
+
+Esta é a fase mais crítica. Faremos com que o WordPress, para a requisição atual, acredite que o usuário logado é o aluno, e não o admin.
+
+  * **Arquivos a Modificar:** `dashboard-aluno.php` e `template-curso.php`
+  * **Local da Modificação:** No topo de ambos os arquivos, antes de qualquer lógica que use `get_current_user_id()` ou `wp_get_current_user()`.
+
+#### **Passo 2.1: Adicionar o Bloco de Impersonificação**
+
+  * **Ação:** Insira o seguinte bloco de código no topo dos dois arquivos (`dashboard-aluno.php` e `template-curso.php`). Ele deve vir antes de tudo.
+
+    ```php
+    <?php
+    // --- INÍCIO DA LÓGICA DE IMPERSONIFICAÇÃO ---
+    // Esta flag irá controlar o estado de preview em toda a sessão de navegação.
+    $is_impersonation_mode = false;
+
+    // Apenas admins podem iniciar o modo de impersonificação.
+    if ( isset( $_GET['impersonate_token'] ) && ! is_user_logged_in() ) {
+        // Se há um token mas o admin não está logado (ex: abriu em outro navegador), redireciona para o login de admin.
+        auth_redirect();
+    }
+
+    // A validação do token só ocorre se o usuário logado FOR um admin.
+    if ( isset( $_GET['impersonate_token'] ) && current_user_can('manage_options') ) {
+        $token = sanitize_key( $_GET['impersonate_token'] );
+        $transient_data = get_transient( $token );
+
+        // Valida o token e os dados contidos nele.
+        if ( $transient_data && $transient_data['admin_id'] === get_current_user_id() ) {
+            
+            $student_id_to_impersonate = (int) $transient_data['student_id'];
+            
+            // Troca o usuário atual para o aluno-alvo.
+            // A partir deste ponto, wp_get_current_user() retornará o aluno.
+            wp_set_current_user( $student_id_to_impersonate );
+
+            $is_impersonation_mode = true;
+            
+            // Apaga o token para que ele só possa ser usado uma vez.
+            delete_transient( $token );
+        }
+    }
+    // --- FIM DA LÓGICA DE IMPERSONIFICAÇÃO ---
+
+    // O resto do código do template continua aqui...
+    // Ex: global $wpdb;
+    //     $current_user = wp_get_current_user();
+    ?>
+    ```
+
+-----
+
+### **Fase 3: Persistência do Modo Preview entre Páginas**
+
+Como `wp_set_current_user` dura apenas uma requisição, precisamos passar o token para os links internos para manter o modo de preview ativo.
+
+  * **Arquivo a Modificar:** `dashboard-aluno.php`
+
+#### **Passo 3.1: Adicionar o Token aos Links dos Cursos**
+
+  * **Ação:** Modifique a geração do `$course_link` para que, se estivermos em modo de impersonificação, um novo token seja gerado e adicionado à URL.
+
+      * Encontre o `foreach ( $courses as $course )` no arquivo `dashboard-aluno.php`.
+      * Dentro do loop, modifique a geração dos links.
+
+  * **Implementação:**
+    Altere esta seção:
+
+    ```php
+    // Linhas existentes
+    $button_label = ( $progress > 0 && $progress < 100 ) ? 'Continuar Curso' : 'Assistir Curso';
+    $course_link = home_url( '/visualizar-curso/?course_id=' . $course->id );
+    ```
+
+    Para esta:
+
+    ```php
+    // Linhas modificadas
+    $button_label = ( $progress > 0 && $progress < 100 ) ? 'Continuar Curso' : 'Assistir Curso';
+    $course_link_base = home_url( '/visualizar-curso/?course_id=' . $course->id );
+
+    // Se estiver em modo de impersonificação, gere um novo token e adicione à URL
+    if ($is_impersonation_mode) {
+        $next_impersonate_token = 'tutoread_impersonate_' . bin2hex(random_bytes(16));
+        // O transient é recriado para a próxima página, usando o ID do admin original (se tivéssemos armazenado)
+        // Por simplicidade, vamos apenas recriar com o admin_id atual, já que a sessão do admin ainda existe.
+        set_transient($next_impersonate_token, [
+            'admin_id'   => get_current_user_id(), // O admin que iniciou
+            'student_id' => $current_user->ID    // O aluno que está sendo impersonado
+        ], 5 * MINUTE_IN_SECONDS);
+        
+        $course_link = add_query_arg('impersonate_token', $next_impersonate_token, $course_link_base);
+    } else {
+        $course_link = $course_link_base;
+    }
+    ```
+
+    *Nota: Será preciso fazer o mesmo para todos os links internos onde o preview deve persistir (ex: links de aulas no `template-curso.php`).*
+
+-----
+
+### **Fase 4: Exibição do Banner de Controle**
+
+O banner é essencial para que o admin saiba que está em um modo especial e possa sair facilmente.
+
+  * **Arquivos a Modificar:** `dashboard-aluno.php` e `template-curso.php`
+  * **Local da Modificação:** Logo após a tag de abertura `<body>` em ambos os arquivos.
+
+#### **Passo 4.1: Inserir o Banner de Impersonificação**
+
+  * **Ação:** Adicione o seguinte código PHP/HTML/CSS.
+
+    ```php
+    <?php
+    // Exibe o banner se a flag de impersonificação estiver ativa
+    if ( isset($is_impersonation_mode) && $is_impersonation_mode === true ) :
+        // O link de saída simplesmente leva de volta à lista de alunos no admin.
+        // O admin nunca foi realmente deslogado, então a sessão dele ainda está ativa.
+        $admin_panel_url = admin_url('admin.php?page=tutor-ead-students');
+        $impersonated_user = wp_get_current_user();
+    ?>
+    <style>
+        .impersonation-banner {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background-color: #d9534f; /* Cor de alerta */
+            color: #fff; padding: 10px 20px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 14px; z-index: 99999; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .impersonation-banner p { margin: 0; padding: 0; }
+        .impersonation-banner a {
+            color: #fff; background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid #fff; border-radius: 4px;
+            padding: 5px 15px; text-decoration: none; margin-left: 20px;
+            font-weight: bold; transition: background-color 0.2s ease;
+        }
+        .impersonation-banner a:hover { background-color: rgba(255, 255, 255, 0.4); }
+        body { padding-top: 45px; /* Empurra o conteúdo para baixo */ }
+    </style>
+    <div class="impersonation-banner">
+        <p>
+            <span class="dashicons dashicons-admin-users"></span>
+            Você está navegando como o aluno: <strong><?php echo esc_html($impersonated_user->display_name); ?></strong>.
+        </p>
+        <a href="<?php echo esc_url($admin_panel_url); ?>" target="_self">Sair do Modo Preview</a>
+    </div>
+    <?php endif; ?>
+    ```
+
+Este plano completo criará uma ferramenta de preview robusta e segura, melhorando drasticamente a capacidade do administrador de gerenciar e dar suporte aos alunos.
+
+
+Excelente adição\! Um contador de expiração no banner de preview é uma ótima melhoria de UX, pois dá ao administrador um feedback claro sobre o tempo restante da sua sessão de preview.
+
+Para implementar o contador, vamos usar JavaScript para criar um timer regressivo. A duração do token será passada do PHP para o JavaScript, e o timer será atualizado a cada segundo.
+
+Aqui está o plano de ação detalhado para adicionar o contador de expiração:
+
+### **Objetivo Principal**
+
+1.  **Passar o Tempo de Expiração:** Modificar a lógica de geração do token para que o tempo de expiração seja armazenado e possa ser passado para o front-end.
+2.  **Renderizar o Contador:** Adicionar um elemento HTML no banner de preview para exibir o contador.
+3.  **Implementar o Timer:** Usar JavaScript para iniciar um timer regressivo que atualiza o contador e, opcionalmente, recarrega a página quando o tempo expira.
+
+-----
+
+### **Fase 1: Geração do Link com Tempo de Expiração (Admin)**
+
+Vamos ajustar a criação do link de preview para incluir o tempo de expiração do token.
+
+  * **Arquivo a Modificar:** `class-course-manager.php`
+  * **Função a Modificar:** `courses_page()`
+  * **Local da Modificação:** Dentro do `// MODO LISTAGEM`, na geração do link do botão "Preview".
+
+#### **Passo 1.1: Adicionar o Tempo de Expiração ao Link**
+
+  * **Ação:** Ao gerar o link de preview, vamos adicionar um novo parâmetro `expire_timestamp` à URL.
+
+  * **Implementação:**
+    Modifique o bloco de código que gera o link de preview:
+
+      * **De:**
+
+        ```php
+        // Bloco de código existente
+        $token = 'tutoread_preview_' . bin2hex(random_bytes(16));
+        set_transient($token, [
+            'user_id'   => get_current_user_id(),
+            'course_id' => $course['id']
+        ], 50 * MINUTE_IN_SECONDS);
+        $preview_url = add_query_arg([
+            'course_id' => $course['id'],
+            'preview_token' => $token
+        ], home_url('/visualizar-curso/'));
+        ```
+
+      * **Para:**
+
+        ```php
+        // Bloco de código modificado
+        $token = 'tutoread_preview_' . bin2hex(random_bytes(16));
+        $expiration_time = 50 * MINUTE_IN_SECONDS;
+        $expire_timestamp = time() + $expiration_time;
+
+        set_transient($token, [
+            'user_id'   => get_current_user_id(),
+            'course_id' => $course['id']
+        ], $expiration_time);
+
+        $preview_url = add_query_arg([
+            'course_id'      => $course['id'],
+            'preview_token'  => $token,
+            'expire_timestamp' => $expire_timestamp // Adicionamos o timestamp de expiração
+        ], home_url('/visualizar-curso/'));
+        ```
+
+-----
+
+### **Fase 2: Exibição do Banner com o Contador (Front-end)**
+
+Agora, vamos adicionar o elemento HTML para o contador no banner de preview.
+
+  * **Arquivo a Modificar:** `template-curso.php`
+  * **Local da Modificação:** Dentro do código do banner de preview.
+
+#### **Passo 2.1: Adicionar o Elemento do Contador**
+
+  * **Ação:** No HTML do banner, adicione um `<span>` que servirá como o nosso contador.
+
+  * **Implementação:**
+    Modifique o HTML do banner:
+
+      * **De:**
+
+        ```html
+        <div class="admin-preview-banner">
+            <p>Você está em <strong>Modo de Pré-visualização</strong> como Administrador.</p>
+            <a href="<?php echo esc_url($admin_panel_url); ?>">Sair do Preview</a>
+        </div>
+        ```
+
+      * **Para:**
+
+        ```html
+        <div class="admin-preview-banner">
+            <p>Você está em <strong>Modo de Pré-visualização</strong>.
+            <span id="preview-timer-container" style="margin-left: 15px; font-weight: normal;">
+                Sessão expira em: <strong id="preview-timer">50:00</strong>
+            </span>
+            </p>
+            <a href="<?php echo esc_url($admin_panel_url); ?>">Sair do Preview</a>
+        </div>
+        ```
+
+-----
+
+### **Fase 3: Implementação do Timer Regressivo (JavaScript)**
+
+Esta é a fase final, onde damos vida ao contador.
+
+  * **Arquivo a Modificar:** `template-curso.php`
+  * **Local da Modificação:** Dentro de um novo bloco `<script>` no final do banner de preview.
+
+#### **Passo 3.1: Adicionar o Script do Timer**
+
+  * **Ação:** Adicione um bloco `<script>` que:
+
+    1.  Pega o `expire_timestamp` da URL.
+    2.  Calcula a diferença de tempo.
+    3.  Inicia um `setInterval` para atualizar o contador a cada segundo.
+    4.  Quando o tempo acabar, exibe uma mensagem e recarrega a página.
+
+  * **Implementação:**
+    Adicione este bloco de código logo após o HTML do banner, dentro do `if ($is_admin_preview)`:
+
+    ```php
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const timerContainer = document.getElementById('preview-timer-container');
+        const timerElement = document.getElementById('preview-timer');
+        
+        // Pega o timestamp de expiração da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const expireTimestamp = parseInt(urlParams.get('expire_timestamp'), 10);
+
+        if (timerElement && expireTimestamp) {
+            const countdownInterval = setInterval(function() {
+                const now = Math.floor(Date.now() / 1000);
+                const secondsRemaining = expireTimestamp - now;
+
+                if (secondsRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                    timerContainer.innerHTML = '<strong>Sessão expirada!</strong> Recarregando...';
+                    // Recarrega a página para invalidar o acesso de preview
+                    setTimeout(() => window.location.reload(), 2000);
+                    return;
+                }
+
+                const minutes = Math.floor(secondsRemaining / 60);
+                const seconds = secondsRemaining % 60;
+
+                // Formata para ter sempre dois dígitos (ex: 09, 05)
+                const displayMinutes = String(minutes).padStart(2, '0');
+                const displaySeconds = String(seconds).padStart(2, '0');
+
+                timerElement.textContent = `${displayMinutes}:${displaySeconds}`;
+
+            }, 1000);
+        }
+    });
+    </script>
+    ```
+
+Com estas três fases, o seu sistema de preview terá um contador de expiração funcional e informativo, melhorando ainda mais a experiência do administrador.
