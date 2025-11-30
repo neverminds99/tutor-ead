@@ -1,0 +1,199 @@
+/* Caminho: assets/css/course-view.css */
+
+/* ============================
+   ESTILO PRINCIPAL DA VISUALIZAÇÃO DO CURSO
+   ============================
+   - `.tutor-ead-course-view`: Define a estrutura principal da página de visualização do curso.
+   - Fonte padrão (`Arial, sans-serif`), espaçamento (`padding: 20px`) e fundo cinza claro (`#f7f7f7`).
+   - Cor do texto definida como escuro (`#333`) para melhor legibilidade.
+*/
+
+/* ============================
+   TÍTULO DO CURSO
+   ============================
+   - `.tutor-ead-course-title`: Aplica um título destacado ao curso.
+   - Tamanho de fonte grande (`28px`), cor azul (`#0056b3`) e borda inferior (`2px solid #ddd`) para separação visual.
+   - `text-align: left` garante alinhamento adequado ao layout.
+*/
+
+/* ============================
+   DESCRIÇÃO DO CURSO
+   ============================
+   - `.tutor-ead-course-description`: Estiliza o parágrafo de descrição do curso.
+   - Fonte de tamanho intermediário (`16px`) e cor de texto cinza médio (`#555`) para legibilidade.
+   - `margin-bottom: 30px` para espaçamento adequado antes dos módulos.
+*/
+
+/* ============================
+   LISTA DE MÓDULOS DO CURSO
+   ============================
+   - `.tutor-ead-modules-list`: Define um layout flexível para exibir os módulos.
+   - Uso de `display: flex` com `flex-wrap: wrap` para organizar os módulos em múltiplas linhas.
+   - Espaçamento de `gap: 20px` entre os módulos.
+*/
+
+/* ============================
+   BLOCO DE MÓDULO INDIVIDUAL
+   ============================
+   - `.tutor-ead-module-block`: Define o contêiner de cada módulo.
+   - Tamanho flexível (`flex: 0 1 calc(33.333% - 20px)`) para que três módulos sejam exibidos por linha.
+   - Borda arredondada (`border-radius: 6px`), fundo branco (`#fff`) e sombra suave para realce.
+*/
+
+/* ============================
+   TÍTULO DO MÓDULO
+   ============================
+   - `.tutor-ead-module-title`: Define o título de cada módulo.
+   - Cor azul (`#0056b3`) e borda inferior (`1px solid #ddd`) para separação.
+   - `padding-bottom: 5px` melhora o espaçamento visual.
+*/
+
+/* ============================
+   DESCRIÇÃO DO MÓDULO
+   ============================
+   - `.tutor-ead-module-description`: Estiliza a descrição de cada módulo.
+   - Fonte menor (`14px`), cor mais escura (`#444`) e espaçamento inferior de `15px`.
+*/
+
+/* ============================
+   LISTA DE AULAS DENTRO DO MÓDULO
+   ============================
+   - `.tutor-ead-lessons-list`: Remove a estilização padrão de listas (`list-style: none`).
+   - `margin: 0` e `padding: 0` garantem alinhamento correto.
+*/
+
+/* ============================
+   ITEM INDIVIDUAL DA AULA
+   ============================
+   - `.tutor-ead-lesson-item`: Representa cada aula dentro de um módulo.
+   - `display: flex` para alinhamento horizontal do conteúdo.
+   - Fundo branco (`#fff`), bordas arredondadas e efeito `hover` para realce visual.
+   - `cursor: pointer` para indicar interatividade.
+*/
+
+/* ============================
+   LINKS DAS AULAS
+   ============================
+   - `.tutor-ead-lesson-item a`: Define o estilo do link de cada aula.
+   - Cor azul (`#0056b3`), `padding` interno e efeito de transição suave (`transition`).
+   - Efeito `hover`: muda a cor para azul escuro (`#003f7f`) e fundo claro (`#eef4fc`).
+*/
+
+/* ============================
+   LINK PARA VOLTAR AO CURSO
+   ============================
+   - `.tutor-ead-back-to-course`: Botão/link para retornar à página principal do curso.
+   - Texto azul (`#0056b3`) e sublinhado para indicar navegação.
+   - `margin-top: 20px` cria espaçamento entre a última aula e o botão de retorno.
+*/
+
+
+/* Estilo principal para a página de visualização do curso */
+.tutor-ead-course-view {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+.tutor-ead-course-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #0056b3;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.tutor-ead-course-description {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.tutor-ead-modules-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: flex-start;
+}
+
+.tutor-ead-module-block {
+    flex: 0 1 calc(33.333% - 20px);
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tutor-ead-module-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0056b3;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.tutor-ead-module-description {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.tutor-ead-lessons-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tutor-ead-lesson-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.tutor-ead-lesson-item:last-child {
+    border-bottom: none;
+}
+
+.tutor-ead-lesson-item:hover {
+    background-color: #f0f0f0;
+}
+
+.tutor-ead-lesson-item a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #0056b3;
+    padding: 10px;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px;
+}
+
+.tutor-ead-lesson-item a:hover {
+    background-color: #eef4fc;
+    color: #003f7f;
+}
+
+.tutor-ead-back-to-course {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #0056b3;
+    text-decoration: underline;
+}

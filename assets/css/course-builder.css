@@ -1,0 +1,249 @@
+/* Caminho: assets/css/course-builder.css */
+
+/* ============================
+   ESTILO PRINCIPAL DO COURSE BUILDER
+   ============================
+   - `#course-builder-form`: Define a estrutura principal do Course Builder.
+   - Aplica uma fonte padrão (`Arial, sans-serif`), cor escura (`#333`), 
+     e espaçamento adequado (`padding: 20px`).
+   - O fundo claro (`#f7f7f7`) e as sombras (`box-shadow`) criam um visual leve e moderno.
+*/
+
+/* ============================
+   ESTILOS DO MÓDULO
+   ============================
+   - `module-accordion`: Estiliza cada módulo com bordas arredondadas e sombreamento suave.
+   - `module-header`: Organiza os elementos do cabeçalho do módulo com espaçamento entre eles.
+*/
+
+/* ============================
+   TÍTULO DO MÓDULO
+   ============================
+   - `module-title`: Define um título destacado para os módulos.
+   - Cor azul (`#0056b3`) para diferenciação, bordas arredondadas e fundo claro.
+   - `padding` e `border` garantem legibilidade e organização do conteúdo.
+*/
+
+/* ============================
+   DESCRIÇÃO DO MÓDULO
+   ============================
+   - `module-description`: Caixa de texto para descrição do módulo.
+   - `min-height: 60px` para manter uma área mínima de edição.
+   - Estilização com fundo claro (`#fafafa`) e bordas arredondadas para um visual suave.
+   - `resize: vertical` permite ajuste dinâmico do tamanho da descrição.
+*/
+
+/* ============================
+   LISTA DE AULAS
+   ============================
+   - `lessons-list`: Remove a formatação padrão de listas e define espaçamento interno.
+*/
+
+/* ============================
+   ESTILOS DA AULA
+   ============================
+   - `lesson-item`: Bloco representando cada aula dentro de um módulo.
+   - Aplica fundo cinza claro (`#f9f9f9`), bordas arredondadas e sombra para destacar.
+   - `transition: background-color` adiciona um efeito suave ao passar o mouse.
+*/
+
+/* ============================
+   TÍTULO DA AULA
+   ============================
+   - `lesson-title`: Define um título de destaque para cada aula.
+   - Aplica cor azul (`#0056b3`), bordas arredondadas e fundo branco.
+   - `padding` garante espaçamento adequado para melhor usabilidade.
+*/
+
+/* ============================
+   EDITOR DE CONTEÚDO DA AULA
+   ============================
+   - `lesson-editor`: Caixa de edição do conteúdo da aula.
+   - `min-height: 100px` para um espaço mínimo confortável para digitação.
+   - Fundo suave (`#fafafa`), bordas arredondadas e opção de redimensionamento vertical.
+*/
+
+/* ============================
+   BOTÕES DE AÇÃO
+   ============================
+   - `module-actions` e `lesson-actions`: Agrupam os botões de ação em cada contexto.
+   - `add-lesson-btn` e `add-module-btn`: Botões para adicionar aulas e módulos.
+   - `delete-lesson-btn` e `delete-module-btn`: Botões vermelhos (`#dc3545`) para exclusão.
+   - `transition: background-color` adiciona um efeito visual ao passar o mouse.
+*/
+
+/* ============================
+   BOTÃO PRINCIPAL DE SALVAR
+   ============================
+   - Botão verde (`#28a745`) para indicar a ação de salvar mudanças.
+   - `padding` e `border-radius` garantem um visual moderno e intuitivo.
+   - `transition: background-color` altera a tonalidade ao passar o mouse.
+*/
+
+/* ============================
+   ORGANIZAÇÃO DOS MÓDULOS
+   ============================
+   - `sortable-modules`: Define espaçamento entre módulos, permitindo a organização visual.
+*/
+
+
+/* Estilo principal do Course Builder */
+#course-builder-form {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    color: #333;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+}
+
+/* Módulo */
+.module-accordion {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.module-header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Título do módulo */
+.module-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #0056b3;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+/* Descrição do módulo */
+.module-description {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fafafa;
+    resize: vertical;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Lista de aulas */
+.lessons-list {
+    margin-top: 15px;
+    padding-left: 0;
+    list-style: none;
+}
+
+/* Aula */
+.lesson-item {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s;
+}
+
+.lesson-item:hover {
+    background-color: #f3f7fc;
+}
+
+/* Título da aula */
+.lesson-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0056b3;
+    margin-bottom: 8px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+/* Editor de conteúdo da aula */
+.lesson-editor {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fafafa;
+    resize: vertical;
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* Botões de ação */
+.module-actions,
+.lesson-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button.add-lesson-btn,
+button.add-module-btn,
+button.delete-lesson-btn,
+button.delete-module-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #0073aa;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button.add-lesson-btn:hover,
+button.add-module-btn:hover,
+button.delete-lesson-btn:hover,
+button.delete-module-btn:hover {
+    background-color: #005a8c;
+}
+
+button.delete-lesson-btn,
+button.delete-module-btn {
+    background-color: #dc3545;
+}
+
+button.delete-lesson-btn:hover,
+button.delete-module-btn:hover {
+    background-color: #b02a37;
+}
+
+/* Botão principal de salvar */
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Espaçamento e alinhamento */
+.sortable-modules {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

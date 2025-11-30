@@ -1,0 +1,566 @@
+/* Caminho: assets/css/tutor-ead.css */
+
+
+/* ============================
+   ESTILOS GERAIS PARA TODAS AS PÁGINAS
+   ============================
+   - Define estilos globais para o painel administrativo do Tutor EAD.
+   - Aplica uma tipografia padrão, com `Arial` e `sans-serif`.
+   - Define um fundo claro (`#f9f9f9`) e cor de texto escura (`#333`).
+   - `.wrap`: Contêiner principal para centralizar e aplicar sombras às seções.
+   - `h1`: Estiliza os títulos principais com cor azul (`#0073aa`) e aumenta o tamanho da fonte.
+   - `p`: Define o espaçamento e tamanho da fonte para melhorar a legibilidade.
+*/
+
+
+/* ============================
+   ESTILOS DO DASHBOARD
+   ============================
+   - `dashboard-container`: Layout flexível para organizar os blocos do dashboard.
+   - `dashboard-card`: Estiliza os cartões do dashboard com fundo claro e sombra sutil.
+   - `dashboard-card:hover`: Adiciona um efeito de elevação ao passar o mouse.
+   - `dashboard-card h2`: Define a aparência dos títulos dentro dos cartões do dashboard.
+   - `dashboard-card p`: Estiliza as descrições dentro dos cartões, deixando-as mais suaves.
+*/
+
+
+/* ============================
+   ESTILOS DAS TABELAS (CURSOS, ALUNOS, PROFESSORES)
+   ============================
+   - `table.widefat`: Ajusta a largura das tabelas para ocupar 100% do espaço disponível.
+   - `th`: Define cabeçalhos das tabelas com fundo azul (`#0073aa`) e texto branco.
+   - `td`: Adiciona espaçamento interno para melhor visualização dos dados.
+   - `tr:hover`: Aplica um fundo mais claro ao passar o mouse para destacar a linha atual.
+   - `action-links a`: Estiliza os links de ação dentro das tabelas, destacando-os em azul.
+*/
+
+
+/* ============================
+   ESTILOS DA PÁGINA DE CURSOS
+   ============================
+   - `courses-header`: Layout do cabeçalho da página de cursos, incluindo título e botão de adicionar.
+   - `add-course-btn`: Botão estilizado para adicionar novos cursos com efeito de transição.
+   - `courses-container`: Estiliza o contêiner onde os cursos são listados de forma organizada.
+   - `course-block`: Bloco de exibição de cada curso, com bordas arredondadas e sombra.
+   - `course-block:hover`: Efeito de elevação ao passar o mouse sobre o curso.
+   - `course-block img`: Ajusta a exibição das imagens de capa dos cursos.
+*/
+
+
+/* ============================
+   ESTILOS DA PÁGINA DE ALUNOS
+   ============================
+   - `students-container`: Aplica espaçamento interno na listagem de alunos.
+   - `filter-section`: Área de filtros e busca de alunos para facilitar a navegação.
+   - `filter-section input`: Campo de pesquisa estilizado para uma experiência mais fluida.
+*/
+
+
+/* ============================
+   ESTILOS DA PÁGINA DE PROFESSORES
+   ============================
+   - `professors-container`: Define o layout da listagem de professores.
+   - `action-links a`: Links estilizados para ações rápidas de gerenciamento de professores.
+*/
+
+
+/* ============================
+   ESTILOS DA PÁGINA DE CONFIGURAÇÕES
+   ============================
+   - `settings-container`: Organiza os elementos da página de configurações em um layout flexível.
+   - `setting-item`: Blocos estilizados para cada configuração, com bordas arredondadas e sombra.
+   - `setting-item h3`: Define a aparência dos títulos das configurações.
+   - `setting-item p`: Ajusta a legibilidade das descrições das configurações.
+   - `save-settings`: Botão de salvar configurações, com efeito de transição ao passar o mouse.
+*/
+
+
+/* ============================
+   ESTILOS PARA FORMULÁRIOS DE ADIÇÃO
+   ============================
+   - `#add-course-form, #add-student-form, #add-teacher-form`: Estiliza os formulários de criação de cursos, alunos e professores.
+   - `button.button-primary`: Adiciona espaçamento inferior nos botões principais.
+   - `table.form-table th`: Ajusta o alinhamento dos títulos dentro das tabelas de formulário.
+*/
+
+
+/* ============================
+   ESTILOS PARA A LISTAGEM DE CURSOS
+   ============================
+   - `courses-list`: Define um fundo branco e espaçamento interno para a área de listagem de cursos.
+   - `add-course-btn`: Botão para adicionar novos cursos, com cor azul e efeito de hover.
+   - `courses-container`: Define um layout flexível para exibição dos cursos em blocos.
+   - `course-block`: Estiliza cada curso individualmente com bordas arredondadas e sombra suave.
+   - `course-block:hover`: Adiciona um efeito de elevação ao passar o mouse sobre o curso.
+   - `course-block h2`: Ajusta o título de cada curso.
+   - `course-block img`: Ajusta o tamanho das imagens dos cursos, garantindo responsividade.
+   - `.no-image`: Define um espaço reservado para cursos sem imagem de capa.
+*/
+
+
+/* ============================
+   ESTILOS DO FORMULÁRIO DE CURSOS
+   ============================
+   - `course-form`: Define um fundo branco e bordas arredondadas para o formulário de cursos.
+   - `course-form input, textarea, select`: Ajusta os tamanhos e bordas dos campos do formulário.
+   - `button-primary`: Define cores para o botão de salvar curso, com efeito de hover.
+   - `featured-image-preview`: Define um tamanho máximo para a pré-visualização da imagem do curso.
+*/
+
+
+/* ============================
+   ESTILOS PARA O COURSE BUILDER
+   ============================
+   - `#modules-list`: Define margens para a listagem de módulos no Course Builder.
+   - `module-accordion`: Estiliza os módulos do Course Builder, aplicando bordas e espaçamento.
+   - `lessons-list`: Adiciona espaçamento interno para exibição das aulas dentro dos módulos.
+   - `lesson-item`: Ajusta a aparência das aulas dentro dos módulos, aplicando bordas arredondadas.
+*/
+
+
+
+/* ============================
+   ESTILOS GERAIS PARA TODAS AS PÁGINAS
+============================ */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.wrap {
+    max-width: 1200px;
+    margin: 20px auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+h1 {
+    color: #0073aa;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* ============================
+   ESTILOS DO DASHBOARD
+============================ */
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.dashboard-card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    background: #f1f1f1;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.dashboard-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #0073aa;
+}
+
+.dashboard-card p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* ============================
+   ESTILOS DAS TABELAS (CURSOS, ALUNOS, PROFESSORES)
+============================ */
+table.widefat {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table.widefat th {
+    background-color: #0073aa;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+}
+
+table.widefat td {
+    padding: 10px;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+table.widefat tr:hover {
+    background-color: #f9f9f9;
+}
+
+.action-links a {
+    color: #0073aa;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.action-links a:hover {
+    text-decoration: underline;
+}
+
+/* ============================
+   ESTILOS DA PÁGINA DE CURSOS
+============================ */
+.courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.courses-header h1 {
+    font-size: 28px;
+}
+
+.courses-header .add-course-btn {
+    background-color: #0073aa;
+    color: #ffffff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.courses-header .add-course-btn:hover {
+    background-color: #005177;
+}
+
+/* ============================
+   ESTILOS DA PÁGINA DE ALUNOS
+============================ */
+.students-container {
+    padding: 10px;
+}
+
+.students-container .filter-section {
+    margin-bottom: 20px;
+}
+
+.students-container .filter-section label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.students-container .filter-section input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* ============================
+   ESTILOS DA PÁGINA DE PROFESSORES
+============================ */
+.professors-container {
+    padding: 10px;
+}
+
+.professors-container .action-links a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.professors-container .action-links a:hover {
+    text-decoration: underline;
+}
+
+/* ============================
+   ESTILOS DA PÁGINA DE CONFIGURAÇÕES
+============================ */
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.settings-container .setting-item {
+    background: #f1f1f1;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settings-container .setting-item h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #0073aa;
+}
+
+.settings-container .setting-item p {
+    font-size: 16px;
+    color: #555;
+}
+
+.settings-container button.save-settings {
+    background: #0073aa;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.settings-container button.save-settings:hover {
+    background: #005177;
+}
+
+/* 
+================================================
+ TUTOR FORM ADMIN MENU
+================================================
+ */
+
+#add-course-form, #add-student-form, #add-teacher-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button.button-primary {
+    margin-bottom: 20px;
+}
+
+table.form-table th {
+    text-align: left;
+}
+
+/* =============== css para pagina de curso no painel de adm wp ================== */
+
+/* Estilos para a listagem de cursos */
+.courses-list {
+    padding: 20px;
+    background: #fff;
+}
+
+.add-course-btn {
+    background-color: #0073aa;
+    border-color: #0073aa;
+    color: #fff;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.add-course-btn:hover {
+    background-color: #006799;
+}
+
+.courses-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.course-block {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 15px;
+    width: calc(33% - 20px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-block:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.course-block h2 {
+    font-size: 1.25em;
+    margin-bottom: 10px;
+}
+
+.course-block img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.no-image {
+    background: #eee;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+.no-image p {
+    color: #555;
+}
+
+/* Estilos para o formulário de cursos */
+.course-form form {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.course-form .form-table th {
+    text-align: left;
+    padding: 10px 15px;
+}
+
+.course-form .form-table td {
+    padding: 10px 15px;
+}
+
+.course-form input[type="text"],
+.course-form input[type="number"],
+.course-form textarea,
+.course-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.course-form .button-primary {
+    background-color: #0073aa;
+    border-color: #0073aa;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+.course-form .button-primary:hover {
+    background-color: #006799;
+}
+
+.featured-image-preview {
+    max-width: 150px;
+    max-height: 150px;
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+
+/* ========= estilos para course builder ============== */
+
+#modules-list {
+    margin-top: 20px;
+}
+
+.module-accordion {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.lessons-list {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.lesson-item {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+}
+
+/* Estilos para o carrossel de usuários online no admin */
+.online-users-carousel-container {
+    padding: 16px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.online-users-carousel-container h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.online-users-carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.online-users-carousel::-webkit-scrollbar {
+    height: 5px;
+}
+.online-users-carousel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.online-users-carousel::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 5px;
+}
+.online-users-carousel::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.online-user-avatar {
+    flex: 0 0 auto; /* Não deixa o item encolher ou esticar */
+    width: 80px; /* Largura total do item */
+    text-align: center;
+    margin-right: 15px;
+}
+
+.online-user-avatar img {
+    width: 75px; /* Tamanho da imagem ajustado */
+    height: 75px; /* Tamanho da imagem ajustado */
+    border-radius: 50%;
+    border: 2px solid #48bb78; /* Borda verde online */
+    padding: 2px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.online-user-avatar img:hover {
+    transform: scale(1.1);
+}
+
+.online-user-avatar p {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}

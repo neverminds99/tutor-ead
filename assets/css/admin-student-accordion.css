@@ -1,0 +1,43 @@
+/* Estilos para o Acordeão de Estatísticas na página de Alunos */
+.tutor-accordion-wrap {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.tutor-accordion-trigger {
+    padding: 16px 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    transition: background-color 0.2s ease;
+}
+
+.tutor-accordion-trigger:hover {
+    background-color: #f9fafb;
+}
+
+.tutor-accordion-trigger .dashicons {
+    transition: transform 0.3s ease;
+    font-size: 20px;
+}
+
+.tutor-accordion-content {
+    display: none; /* Oculto por padrão */
+    padding: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.tutor-accordion-wrap.is-open .tutor-accordion-content {
+    display: block;
+}
+
+.tutor-accordion-wrap.is-open .tutor-accordion-trigger .dashicons {
+    transform: rotate(180deg);
+}
