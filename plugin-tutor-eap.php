@@ -42,7 +42,7 @@ if (!defined('TUTOR_EAD_PATH')) {
 }
 
 // =========================================================================
-// 1.5 ATUALIZAÇÃO AUTOMÁTICA (GITHUB)
+// 1.5 ATUALIZAÇÃO AUTOMÁTICA (GITHUB - MODO PÚBLICO)
 // =========================================================================
 
 // Verifica se a biblioteca existe na pasta especificada
@@ -50,17 +50,14 @@ if (file_exists(TUTOR_EAD_PATH . 'plugin-update-checker-master/plugin-update-che
     
     require 'plugin-update-checker-master/plugin-update-checker.php';
     
-    // Importante: Usar a classe dentro do namespace da biblioteca
+    // Configuração para Repositório PÚBLICO (Sem Token)
     $myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
         'https://github.com/neverminds99/tutor-ead', // URL do seu repositório
         __FILE__,
         'tutor-ead'
     );
 
-    // [IMPORTANTE] COLE SEU NOVO TOKEN AQUI (Mantenha as aspas simples)
-    // Se o repo for PÚBLICO, pode comentar esta linha adicionando // no inicio.
-    $myUpdateChecker->setAuthentication('COLE_SEU_NOVO_TOKEN_AQUI');
-
+    // Define a branch principal
     $myUpdateChecker->setBranch('main');
 }
 
