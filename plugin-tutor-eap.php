@@ -3,7 +3,7 @@
  * Plugin Name:       Tutor EAD
  * Plugin URI:        https://tutoread.com.br
  * Description:       Plugin de gerenciamento de cursos EAD para WordPress.
- * Version:           2.0.1
+ * Version:           2.0.4
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Guilherme S. Azevedo
@@ -35,7 +35,7 @@ if (!defined('TUTOR_EAD_LOGO_URL')) {
     define('TUTOR_EAD_LOGO_URL', plugin_dir_url(__FILE__) . 'img/tutureadlogo.png');
 }
 if (!defined('TUTOR_EAD_VERSION')) {
-    define('TUTOR_EAD_VERSION', '2.0');
+    define('TUTOR_EAD_VERSION', '2.0.4');
 }
 if (!defined('TUTOR_EAD_PATH')) {
     define('TUTOR_EAD_PATH', plugin_dir_path(__FILE__));
