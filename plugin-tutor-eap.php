@@ -46,12 +46,12 @@ if (!defined('TUTOR_EAD_PATH')) {
 // =========================================================================
 
 // Verifica se a biblioteca existe na pasta especificada
-if (file_exists(TUTOR_EAD_PATH . 'plugin-update-checker-master/plugin-update-checker.php')) {
+if (file_exists(TUTOR_EAD_PATH . 'plugin-update-checker-master/vendor/autoload.php')) {
     
-    require 'plugin-update-checker-master/plugin-update-checker.php';
+    require_once TUTOR_EAD_PATH . 'plugin-update-checker-master/vendor/autoload.php';
     
     // Configuração para Repositório PÚBLICO (Sem Token)
-    $myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+    $myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5p6\PucFactory::buildUpdateChecker(
         'https://github.com/neverminds99/tutor-ead', // URL do seu repositório
         __FILE__,
         'tutor-ead'
